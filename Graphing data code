@@ -1,7 +1,5 @@
 //author: Ted Lin
-//contributors: Vincent Viloria, Isaac Addis
-
-package motion_profiling;
+//contributors: Vincent Viloria
 
 import java.util.Scanner;
 import java.io.BufferedWriter;
@@ -11,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class graphingdata2 {
+public class GraphingData {
 
 	public static void main(String[] args) {
 		double time;
@@ -81,7 +79,38 @@ public class graphingdata2 {
 		for(int i = 0; i < distancedata.size(); i++) {   
 		    System.out.println(distancedata.get(i));
 		}  
-		
+		//Code below based off of Isaac and Ronan's File writer for TBH
+		//Initializes writing to files
+		try {
+			FileWriter writer = new FileWriter("CSV file for data");
+			
+			//Headings
+			writer.append("Time");
+			writer.append(",");
+			writer.append("Distance");
+			writer.append(",");
+			writer.append("Velocity");
+			writer.append("\r");
+			
+			//Start for loop
+			for(int i=0; i < (vmax/amax)+(dist/vmax); i++){
+				
+				//Rows
+				writer.append(String.valueOf(timedata.get(i)));
+				writer.append(",");
+				writer.append(" "+ String.valueOf(velocitydata.get(i)));
+				writer.append(",");
+				writer.append(" "+ String.valueOf(distancedata.get(i)));
+				writer.append("\r");
+				
+			}
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 
 	}
 
