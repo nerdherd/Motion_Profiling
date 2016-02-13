@@ -65,30 +65,16 @@ public class GraphingData {
 			
 		}
 		
-		//right now only printing out data in console output
-		//going to merge isaac/ronan's code to print to separate file
-		System.out.println("Time data");
-		for(int i = 0; i < timedata.size(); i++) {   
-		    System.out.println(timedata.get(i));
-		}  
-		System.out.println("Velocity data");
-		for(int i = 0; i < velocitydata.size(); i++) {   
-		    System.out.println(velocitydata.get(i));
-		}  
-		System.out.println("Distance data");
-		for(int i = 0; i < distancedata.size(); i++) {   
-		    System.out.println(distancedata.get(i));
-		}  
 		//Code below based off of Isaac and Ronan's File writer for TBH
 		//Initializes writing to files
 		try {
-			FileWriter writer = new FileWriter("CSV file for data");
+			FileWriter writer = new FileWriter("CSV data file.txt");
 			
 			//Headings
 			writer.append("Time");
-			writer.append(",");
+			writer.append("\t");
 			writer.append("Distance");
-			writer.append(",");
+			writer.append("\t");
 			writer.append("Velocity");
 			writer.append("\r");
 			
@@ -97,9 +83,9 @@ public class GraphingData {
 				
 				//Rows
 				writer.append(String.valueOf(timedata.get(i)));
-				writer.append(",");
+				writer.append("\t");
 				writer.append(" "+ String.valueOf(velocitydata.get(i)));
-				writer.append(",");
+				writer.append("\t");
 				writer.append(" "+ String.valueOf(distancedata.get(i)));
 				writer.append("\r");
 				
@@ -115,3 +101,4 @@ public class GraphingData {
 	}
 
 }
+
