@@ -1,0 +1,88 @@
+//author: Ted Lin
+//contributors: Vincent Viloria, Isaac Addis
+
+package motion_profiling;
+
+import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class graphingdata2 {
+
+	public static void main(String[] args) {
+		double time;
+		
+		//given desired distance, max acceleration, max velocity, and clock speed
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Input desired distance");
+		double dist = scan.nextFloat();
+		System.out.println("Input max acceleration");
+		double amax = scan.nextFloat();
+		System.out.println("Input max velocity");
+		double vmax = scan.nextFloat();
+		System.out.println("Input clock speed");
+		double clk = scan.nextFloat();
+		
+		//initializing desired data for or s-curve motion profiles
+		double x;    		// x = time in x-axis
+		double v;	 		// v = velocity in y-axis 
+		double distance;	// distance = distance in y-axis
+		
+		ArrayList<Double> timedata = new ArrayList<Double>();
+		ArrayList<Double> velocitydata = new ArrayList<Double>();
+		ArrayList<Double> distancedata = new ArrayList<Double>();
+		
+		//calculate data
+		for (time = 0; time < vmax/amax; time += clk){
+			x = (float)(0.5 * amax * Math.pow(time, (double)2));
+			v = amax * time;
+			distance = x*v;
+			timedata.add(x);
+			velocitydata.add(v);
+			distancedata.add(distance);
+
+		}
+		for (time = vmax/amax; time < dist/vmax; time += clk){
+			x = (float)(0.5 * Math.pow(vmax, 2) / amax) + (vmax * (time - (vmax/amax)));
+			v = (vmax);
+			distance = x*v;
+			timedata.add(x);
+			velocitydata.add(v);
+			distancedata.add(distance);
+
+		}
+		
+		for (time = dist/vmax; time <= (vmax/amax)+(dist/vmax); time += clk){
+			x = (float)(dist - 0.5 * amax * Math.pow((time-((vmax/amax)+(dist/vmax))), 2));
+			v = amax * ((vmax/amax)+(dist/vmax)-time);
+			distance = x*v;
+			timedata.add(x);
+			velocitydata.add(v);
+			distancedata.add(distance);
+			
+			
+		}
+		
+		//right now only printing out data in console output
+		//going to merge isaac/ronan's code to print to separate file
+		System.out.println("Time data");
+		for(int i = 0; i < timedata.size(); i++) {   
+		    System.out.println(timedata.get(i));
+		}  
+		System.out.println("Velocity data");
+		for(int i = 0; i < velocitydata.size(); i++) {   
+		    System.out.println(velocitydata.get(i));
+		}  
+		System.out.println("Distance data");
+		for(int i = 0; i < distancedata.size(); i++) {   
+		    System.out.println(distancedata.get(i));
+		}  
+		
+
+	}
+
+}
