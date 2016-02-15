@@ -44,7 +44,7 @@ public class GraphingData {
 
 		}
 		for (time = vmax/amax; time < dist/vmax; time = time + clk){
-			x = (float)(0.5 * Math.pow(vmax, 2) / amax) + (vmax * (time - (vmax/amax)));
+			x = (float)(0.5 * (Math.pow(vmax, 2) / amax)) + (vmax * (time - (vmax/amax)));
 			v = (vmax);
 			timedata.add(time);
 			velocitydata.add(v);
@@ -55,7 +55,6 @@ public class GraphingData {
 		for (time = dist/vmax; time <= (vmax/amax)+(dist/vmax); time = time + clk){
 			x = (float)(dist - 0.5 * amax * Math.pow((time-((vmax/amax)+(dist/vmax))), 2));
 			v = amax * ((vmax/amax)+(dist/vmax)-time);
-			distance = x*v;
 			timedata.add(time);
 			velocitydata.add(v);
 			distancedata.add(x);
@@ -77,7 +76,7 @@ public class GraphingData {
 			writer.append("\r");
 			
 			//Start for loop
-			for(int i=0; i < (vmax/amax)+(dist/vmax); i++){
+			for(int i=0; i <= ((vmax/amax)+(dist/vmax))/clk; i++){
 				
 				//Rows
 				writer.append(String.valueOf(timedata.get(i)));
