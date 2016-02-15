@@ -26,7 +26,7 @@ public class GraphingData {
 		double clk = scan.nextFloat();
 		
 		//initializing desired data for or s-curve motion profiles
-		double x;    		// x = time in x-axis
+		double x;    		// x = distance in y-axis
 		double v;	 		// v = velocity in y-axis 
 		double distance;	// distance = distance in y-axis
 		
@@ -35,32 +35,30 @@ public class GraphingData {
 		ArrayList<Double> distancedata = new ArrayList<Double>();
 		
 		//calculate data
-		for (time = 0; time < vmax/amax; time += clk){
+		for (time = 0; time < vmax/amax; time = time + clk){
 			x = (float)(0.5 * amax * Math.pow(time, (double)2));
 			v = amax * time;
-			distance = x*v;
-			timedata.add(x);
+			timedata.add(time);
 			velocitydata.add(v);
-			distancedata.add(distance);
+			distancedata.add(x);
 
 		}
-		for (time = vmax/amax; time < dist/vmax; time += clk){
+		for (time = vmax/amax; time < dist/vmax; time = time + clk){
 			x = (float)(0.5 * Math.pow(vmax, 2) / amax) + (vmax * (time - (vmax/amax)));
 			v = (vmax);
-			distance = x*v;
-			timedata.add(x);
+			timedata.add(time);
 			velocitydata.add(v);
-			distancedata.add(distance);
+			distancedata.add(x);
 
 		}
 		
-		for (time = dist/vmax; time <= (vmax/amax)+(dist/vmax); time += clk){
+		for (time = dist/vmax; time <= (vmax/amax)+(dist/vmax); time = time + clk){
 			x = (float)(dist - 0.5 * amax * Math.pow((time-((vmax/amax)+(dist/vmax))), 2));
 			v = amax * ((vmax/amax)+(dist/vmax)-time);
 			distance = x*v;
-			timedata.add(x);
+			timedata.add(time);
 			velocitydata.add(v);
-			distancedata.add(distance);
+			distancedata.add(x);
 			
 			
 		}
@@ -73,9 +71,9 @@ public class GraphingData {
 			//Headings
 			writer.append("Time");
 			writer.append("\t");
-			writer.append("Distance");
-			writer.append("\t");
 			writer.append("Velocity");
+			writer.append("\t");
+			writer.append("Distance");
 			writer.append("\r");
 			
 			//Start for loop
