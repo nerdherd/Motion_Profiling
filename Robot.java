@@ -1,11 +1,12 @@
 //ATTENTION:
-/*Things to finish:
- * Set motor values
+/*Things to do eventually:
+ * Determine values for all variables
  */
 package org.usfirst.frc.team687.robot;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,14 +19,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 
 public class Robot extends IterativeRobot {
-	VictorSP kDriveFrontLeft;
-	VictorSP kDriveFrontRight;
-	VictorSP kDriveBackLeft;
-	VictorSP kDriveBackRight;
-	Encoder encode;
+	Joystick joyLeft, joyRight;
+	VictorSP kDriveFrontLeft, kDriveFrontRight, kDriveBackLeft, kDriveBackRight;
+	Encoder encodeLeft, encodeRight;
 	double last_time;
-	double last_encode;
-	double acc;
+	double last_encodeLeft, last_encodeRight;
+	double accLeft, accRight;
 	double m_end_time;
 	double m_max_acceleration;
 	double m_desired_distance;
@@ -37,11 +36,15 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-    	encode = new Encoder(0,0);
+    	encodeLeft = new Encoder(0,1);
+    	encodeRight = new Encoder(2,3);
     	kDriveFrontLeft = new VictorSP(2);
     	kDriveFrontRight = new VictorSP(3);
     	kDriveBackLeft = new VictorSP(4);
     	kDriveBackRight = new VictorSP(5);
+    	Joystick joyLeft = new Joystick(0);
+    	Joystick joyRight = new Joystick(1);
+    	
     			
     }
 
@@ -56,20 +59,32 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	double current_encode = encode.getRaw();
+    	kDriveFrontLeft.set(joyLeft.getY() * m_max_speed);
+    	kDriveBackLeft.set(joyLeft.getY() * m_max_speed);
+    	kDriveFrontRight.set(joyRight.getY() * m_max_speed);
+    	kDriveBackRight.set(joyRight.getY() * m_max_speed);
+    	double current_encodeLeft = encodeLeft.getRaw();
+    	double current_encodeRight = encodeRight.getRaw();
     	double time = System.currentTimeMillis();
     	double delta_time = time - last_time;
-    	double delta_encode = current_encode - last_encode;
-    	double actual_rpm = (delta_encode/delta_time)/ 250.0;
+    	double delta_encodeLeft = current_encodeLeft - last_encodeLeft;
+    	double delta_encodeRight = current_encodeRight- last_encodeRight;
+    	double actual_rpmLeft = (delta_encodeLeft/delta_time)/ 250.0;
+    	double actual_rpmRight = (delta_encodeRight/delta_time)/ 250.0;
     	
     	
     	
     	last_time = time;
-    	last_encode = current_encode;
+    	last_encodeLeft = current_encodeLeft;
+    	last_encodeRight = current_encodeRight;
     	
-    	acc = actual_rpm < m_max_speed - m_max_acceleration * m_end_time ? m_max_acceleration : actual_rpm < m_max_speed ? (m_max_speed - actual_rpm) * m_end_time : 0; 
-        SmartDashboard.putNumber("Distance", current_encode);
+    	accLeft = actual_rpmLeft < m_max_speed - m_max_acceleration * m_end_time ? m_max_acceleration : actual_rpmLeft < m_max_speed ? (m_max_speed - actual_rpmLeft) * m_end_time : 0; 
+    	accRight = actual_rpmRight < m_max_speed - m_max_acceleration * m_end_time ? m_max_acceleration : actual_rpmRight < m_max_speed ? (m_max_speed - actual_rpmRight) * m_end_time : 0; 
+        SmartDashboard.putNumber("Distance (Left Encode)", current_encodeLeft);
+        SmartDashboard.putNumber("Distance (Right Encode)", current_encodeRight);
         SmartDashboard.putNumber("Time", time);
+       
+
         
     }
     
