@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>fileWriteTest</name>
+=======
+	<name>Master</name>
+>>>>>>> origin/master
 	<comment></comment>
 	<projects>
 	</projects>
@@ -13,5 +17,9 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+<<<<<<< HEAD
+=======
+		<nature>edu.wpi.first.wpilib.plugins.core.nature.FRCProjectNature</nature>
+>>>>>>> origin/master
 	</natures>
 </projectDescription>
