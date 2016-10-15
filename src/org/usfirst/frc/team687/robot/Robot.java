@@ -42,8 +42,8 @@ public class Robot extends IterativeRobot {
     	kDriveFrontRight = new VictorSP(3);
     	kDriveBackLeft = new VictorSP(4);
     	kDriveBackRight = new VictorSP(5);
-    	
-    			
+    	double lastErrorLeft = 0;
+    	double lastErrorRight = 0;	
     }
 
     /**
@@ -57,10 +57,10 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-    	kDriveFrontLeft.set(velocityLeft);
-    	kDriveBackLeft.set(velocityLeft);
-    	kDriveFrontRight.set(velocityRight);
-    	kDriveBackRight.set(velocityRight);
+    	kDriveFrontLeft.set(leftPower);
+    	kDriveBackLeft.set(leftPower);
+    	kDriveFrontRight.set(rightPower);
+    	kDriveBackRight.set(rightPower);
     	double current_encodeLeft = encodeLeft.getRaw();
     	double current_encodeRight = encodeRight.getRaw();
     	double time = System.currentTimeMillis();
@@ -69,7 +69,9 @@ public class Robot extends IterativeRobot {
     	double delta_encodeRight = current_encodeRight- last_encodeRight;
     	double actual_rpmLeft = (delta_encodeLeft/delta_time)/ 250 / 60000.0;
     	double actual_rpmRight = (delta_encodeRight/delta_time)/ 250.0;
-    	
+	double errorLeft = m_desired_distance - current_encodeLeft;
+    	double errorRight = m_desired_distance - current_encodeRight;
+	    
     	velocityLeft = (current_encodeLeft - 0.5 * accLeft * time * time) / time;
     	velocityRight = (current_encodeRight - 0.5 * accRight * time * time) / time;
     	
@@ -83,8 +85,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Distance (Right Encode)", current_encodeRight);
         SmartDashboard.putNumber("Time", time);
        
-
-        
+	double rightPower = m_P * errorRight + m_D * (errorRight - lastErrorRight) / (delta_time - velocityRight) + m_kV * velocityRight + m_kA * accRight;
+	double leftPower = m_P * errorLeft + m_D * (errorLeft - lastErrorLeft) / (delta_time - velocityLeft) + m_kV * velocityLeft + m_kA * accLeft;
+	//power = P * (error) + D * (error - lasterror) / (deltaTime - goal_velocity) + kV * goal_velocity + kA * goalAcceleration
+        lastErrorLeft = errorLeft;
+	lastErrorRight = errorRight;
     }
     
     /**
@@ -98,10 +103,12 @@ public class Robot extends IterativeRobot {
     	double m_max_acceleration = max_acceleration;
     	double m_desired_distance = desired_distance;
     	double m_max_speed = max_speed;
-    	
-    	
-    	
-    
     }
+	void SetConstants (double p, double d, double kv, double ka){
+		double m_P = p;
+		double m_D = d;
+		double m_kV = kv;
+		double m_kA = ka;
+	}
     
 }
