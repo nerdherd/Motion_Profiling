@@ -1,5 +1,5 @@
 //ATTENTION:
-/*Things to do eventually:
+/* Things to do eventually:
  * Determine values for "SetKnownVariables"
  */
 package org.usfirst.frc.team687.robot;
@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
  * directory.
+ * 
+ * @author Ronan Konishi
+ * 
  */
 
 public class Robot extends IterativeRobot {
@@ -32,7 +35,7 @@ public class Robot extends IterativeRobot {
 	
 	
     /**
-//     * This function is run when the robot is first started up and should be
+     * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
@@ -69,7 +72,7 @@ public class Robot extends IterativeRobot {
     	double delta_encodeRight = current_encodeRight- last_encodeRight;
     	double actual_rpmLeft = (delta_encodeLeft/delta_time)/ 250 / 60000.0;
     	double actual_rpmRight = (delta_encodeRight/delta_time)/ 250.0;
-	double errorLeft = m_desired_distance - current_encodeLeft;
+        double errorLeft = m_desired_distance - current_encodeLeft;
     	double errorRight = m_desired_distance - current_encodeRight;
 	    
     	velocityLeft = (current_encodeLeft - 0.5 * accLeft * time * time) / time;
@@ -84,12 +87,12 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Distance (Left Encode)", current_encodeLeft);
         SmartDashboard.putNumber("Distance (Right Encode)", current_encodeRight);
         SmartDashboard.putNumber("Time", time);
-       
-	double rightPower = m_P * errorRight + m_D * (errorRight - lastErrorRight) / (delta_time - velocityRight) + m_kV * velocityRight + m_kA * accRight;
-	double leftPower = m_P * errorLeft + m_D * (errorLeft - lastErrorLeft) / (delta_time - velocityLeft) + m_kV * velocityLeft + m_kA * accLeft;
-	//power = P * (error) + D * (error - lasterror) / (deltaTime - goal_velocity) + kV * goal_velocity + kA * goalAcceleration
+
+        double rightPower = m_P * errorRight + m_D * (errorRight - lastErrorRight) / (delta_time - velocityRight) + m_kV * velocityRight + m_kA * accRight;
+        double leftPower = m_P * errorLeft + m_D * (errorLeft - lastErrorLeft) / (delta_time - velocityLeft) + m_kV * velocityLeft + m_kA * accLeft;
+        //power = P * (error) + D * (error - lasterror) / (deltaTime - goal_velocity) + kV * goal_velocity + kA * goalAcceleration
         lastErrorLeft = errorLeft;
-	lastErrorRight = errorRight;
+        lastErrorRight = errorRight;
     }
     
     /**
